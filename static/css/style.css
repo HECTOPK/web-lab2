@@ -1,0 +1,14 @@
+.win{
+	display: none;
+	position: absolute;
+	width: 40%;
+	height: auto;
+	left: 30%;
+	top: 30%;
+	text-align: center;
+	/* background-color: red; */
+}
+
+#gameover h2{
+	horizontal-align:
+}

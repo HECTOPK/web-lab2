@@ -1,0 +1,22 @@
+extends base
+
+block content
+	h1 Home Library
+	a(href='/books/new')
+		button(class='btn btn-primary container-fluid') Add Book
+	if books
+		ul(class='list-group mt-2')
+			for book in books
+				li(class='list-group-item' id=book.id)
+					.row
+						.col
+								h3
+									a(href='books/' + book.id)= book.title
+								h4 book.author
+								p
+									if book.inStock
+										p In Stock
+									else
+										p= book.customer + ' till ' + book.date
+						.col-2
+							button(class='btn btn-danger container-fluid', onclick='remove_book(' + book.id + ');') Remove
