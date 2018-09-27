@@ -1,4 +1,23 @@
 extends base
 
 block content
-	h1= book.title
+	h1= book.title + ', ' + book.year
+	h3= 'Written by ' + book.author
+	if book.inStock
+		p(style='display:inline', id='stock')= 'In Stock'
+		button(class='btn btn-primary ml-2', onclick='give_away_button();', id='btn') Give away
+	else
+		p(style='display:inline', id='stock')= book.customer + ' until ' + book.date
+		button(class='btn btn-primary ml-2', onclick='return_book(' + book.id + ');', id='btn') Return book
+	
+	div(style='display:none;position:absolute;width:60%;height:auto;left:20%;top:30%;' class='bg-dark text-white rounded' id='give_away')
+		div(class='container my-3')
+			.form-group
+				label= 'Name:'
+				input(class='form-control', required, id='name', type='text')
+			.form-group
+				label= 'Until:'
+				input(class='form-control', require, id='date')
+			button(class='btn btn-light', onclick='give_away(' + book.id + ');') Save
+			button(class='btn btn-danger ml-2', onclick='give_away_cancel()') Cancel
+		

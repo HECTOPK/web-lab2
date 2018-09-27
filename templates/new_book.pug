@@ -1,12 +1,15 @@
 extends base
 
 block content
-	h1= 'Add New Book'
-	form
+	h1= title
+	form(method='post' action=action)
 		.form-group
-			label= 'Title:'
-			input(class='form-control', require)
+			label(for='title')= 'Title:'
+			input(class='form-control', id='title', required, name='title', type='text', value=book.title)
 		.form-group
 			label= 'Author:'
-			input(class='form-control', require)
-		button(type='submit' class='btn btn-primary') Save
+			input(class='form-control', require, name='author', value=book.author)
+		.form-group
+			label= 'Year:'
+			input(class='form-control', require, name='year', value=book.year)
+		input(type='submit' class='btn btn-primary', value='Save')

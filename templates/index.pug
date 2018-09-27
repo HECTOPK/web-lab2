@@ -3,20 +3,37 @@ extends base
 block content
 	h1 Home Library
 	a(href='/books/new')
-		button(class='btn btn-primary container-fluid') Add Book
+		button(class='btn btn-primary container-fluid mb-2') Add Book
+	button(class='btn btn-info', onclick='showOnlyInStock(true);', id='onlyInStockButton') Show only in stock
 	if books
-		ul(class='list-group mt-2')
+		ul(class='list-group mt-2', id='bookList')
 			for book in books
 				li(class='list-group-item' id=book.id)
 					.row
 						.col
 								h3
 									a(href='books/' + book.id)= book.title
-								h4 book.author
-								p
-									if book.inStock
-										p In Stock
-									else
-										p= book.customer + ' till ' + book.date
+								h4= book.author
+								if book.inStock
+									p In Stock
+								else
+									p= book.customer + ' until ' + book.date
 						.col-2
-							button(class='btn btn-danger container-fluid', onclick='remove_book(' + book.id + ');') Remove
+							div
+								button(class='btn btn-danger container-fluid', onclick='remove_book(' + book.id + ');') Remove
+							div(class='mt-2')
+								a(href='/books/edit/' + book.id)
+									button(class='btn btn-success container-fluid') Edit
+			li(class='list-group-item' style='display:none;', id='book_template')
+				.row
+					.col
+							h3(id='book_title')
+								a(href='books/', id='book_link')
+							h4(id='book_author')
+							p(id='book_stock')
+					.col-2
+						div
+							button(class='btn btn-danger container-fluid', onclick='remove_book();') Remove
+						div(class='mt-2')
+							a(href='/books/edit/')
+								button(class='btn btn-success container-fluid') Edit
