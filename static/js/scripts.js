@@ -53,6 +53,7 @@ function give_away_cancel(){
 }
 
 var onlyInStock = false;
+var filterBydate = false;
 
 function showBooks(books){
 	var ul = document.getElementById('bookList');
@@ -74,8 +75,12 @@ function showBooks(books){
 			li.querySelector('#book_stock').innerHTML = book.customer + ' until ' + book.date;
 		}
 		li.style.display = 'block';
+		li.querySelector('#edit_link').setAttribute('href', '/books/edit/' + book.id);
+		li.querySelector('#remove_button').setAttribute('onclick', 'javascript: remove_book('+ book.id + ');');
+		li.setAttribute('id', book.id);
 		ul.appendChild(li);
 	}
+	ul.appendChild(template);
 }
 
 function showOnlyInStock(x){
@@ -100,6 +105,49 @@ function showOnlyInStock(x){
 		xhttp.open("GET", '/api/books?filter=all', true);
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200){
+				showBooks(JSON.parse(this.responseText));
+			}
+		};
+		xhttp.send();
+	}
+}
+
+function filterByDateCheck(){
+	var checkbox = document.getElementById('dateCheckbox');
+	var input = document.getElementById('dateInput');
+	if(checkbox.checked == true){
+		if(!input.value){
+			input.setAttribute('style', 'border-color:red;')
+			checkbox.checked = false;
+		}
+
+	}
+	else{
+
+	}
+}
+
+function onlyInStockCheck(){
+	var checkbox = document.getElementById('inStockCheckbox');
+	if(checkbox.checked == true){
+		onlyInStock = true;
+		const xhttp = new XMLHttpRequest();
+		xhttp.open("GET", '/api/books?onlyInStock=true&' + 'filterBydate=' + filterBydate, true);
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200){
+				console.log(this.responseText);
+				showBooks(JSON.parse(this.responseText));
+			}
+		};
+		xhttp.send();
+	}
+	else{
+		onlyInStock = false;
+		const xhttp = new XMLHttpRequest();
+		xhttp.open("GET", '/api/books?onlyInStock=false&' + 'filterBydate=' + filterBydate, true);
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200){
+				console.log(this.responseText);
 				showBooks(JSON.parse(this.responseText));
 			}
 		};

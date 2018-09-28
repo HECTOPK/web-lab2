@@ -4,7 +4,17 @@ block content
 	h1 Home Library
 	a(href='/books/new')
 		button(class='btn btn-primary container-fluid mb-2') Add Book
-	button(class='btn btn-info', onclick='showOnlyInStock(true);', id='onlyInStockButton') Show only in stock
+	//- button(class='btn btn-info', onclick='showOnlyInStock(true);', id='onlyInStockButton', style='display:inline;') Show only in stock
+	form(style='display:inline-block;', class='form-inline ml-2', action='javascript:void(0)')
+		div(class='form-check')
+			label(class='form-check-label') Only In Stock
+				input(type='checkbox', class='form-check-input ml-2', style='display:inline-block;', onclick='onlyInStockCheck()', id='inStockCheckbox')
+	form(style='display:inline-block;', class='form-inline ml-2', action='javascript:void(0)')
+		div(class='form-check')
+			label(class='form-check-label') Filter by date
+				input(type='checkbox', class='form-check-input ml-2', style='display:inline-block;', onclick='filterByDateCheck()', id='dateCheckbox')
+	form(style='display:inline-block;', class='form-inline ml-2', action='javascript:void(0)')
+		input(class='form-control', placeholder='dd.mm.yyyy', id='dateInput')
 	if books
 		ul(class='list-group mt-2', id='bookList')
 			for book in books
@@ -20,9 +30,9 @@ block content
 									p= book.customer + ' until ' + book.date
 						.col-2
 							div
-								button(class='btn btn-danger container-fluid', onclick='remove_book(' + book.id + ');') Remove
+								button(class='btn btn-danger container-fluid', onclick='remove_book(' + book.id + ');', id='remove_button') Remove
 							div(class='mt-2')
-								a(href='/books/edit/' + book.id)
+								a(href='/books/edit/' + book.id, id='edit_link')
 									button(class='btn btn-success container-fluid') Edit
 			li(class='list-group-item' style='display:none;', id='book_template')
 				.row
@@ -33,7 +43,7 @@ block content
 							p(id='book_stock')
 					.col-2
 						div
-							button(class='btn btn-danger container-fluid', onclick='remove_book();') Remove
+							button(class='btn btn-danger container-fluid', onclick='remove_book();', id='remove_button') Remove
 						div(class='mt-2')
-							a(href='/books/edit/')
+							a(href='/books/edit/', id='edit_link')
 								button(class='btn btn-success container-fluid') Edit

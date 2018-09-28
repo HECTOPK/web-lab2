@@ -6,15 +6,19 @@ const bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 router.get("/books", (req, res) => {
-	var filter = req.query.filter;
-	if (filter == 'all') {
-		res.send(require('./db.json').books);
-	}
-	if (filter == 'onlyInStock') {
-		res.send(require('./db.json').books.filter((e)=>{
+	console.log(req.query);
+	var onlyInStock = req.query.onlyInStock;
+	var books = require('./db.json').books;
+	console.log(onlyInStock);
+	if (onlyInStock != 'false') {
+		console.log('books:',books);
+		books = books.filter((e)=>{
+			console.log(e.inStock);
 			return e.inStock == true;
-		}));
+		});
 	}
+	console.log(books);
+	res.send(JSON.stringify(books));
 });
 
 router.delete("/books/remove/:id", (req, res) => {
