@@ -8,13 +8,16 @@ var urlencodedParser = bodyParser.urlencoded({ extended: true });
 router.get("/books", (req, res) => {
 	console.log(req.query);
 	var onlyInStock = req.query.onlyInStock;
+	var filterBydate = req.query.filterBydate;
 	var books = require('./db.json').books;
-	console.log(onlyInStock);
 	if (onlyInStock != 'false') {
-		console.log('books:',books);
 		books = books.filter((e)=>{
-			console.log(e.inStock);
 			return e.inStock == true;
+		});
+	}
+	if(filterBydate != 'false'){
+		books = books.filter((e)=>{
+			return e.date == filterBydate;
 		});
 	}
 	console.log(books);

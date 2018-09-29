@@ -14,7 +14,7 @@ block content
 			label(class='form-check-label') Filter by date
 				input(type='checkbox', class='form-check-input ml-2', style='display:inline-block;', onclick='filterByDateCheck()', id='dateCheckbox')
 	form(style='display:inline-block;', class='form-inline ml-2', action='javascript:void(0)')
-		input(class='form-control', placeholder='dd.mm.yyyy', id='dateInput')
+		input(type='date', class='form-control', placeholder='dd.mm.yyyy', id='dateInput')
 	if books
 		ul(class='list-group mt-2', id='bookList')
 			for book in books
@@ -23,7 +23,7 @@ block content
 						.col
 								h3
 									a(href='books/' + book.id)= book.title
-								h4= book.author
+								h4='by '+ book.author
 								if book.inStock
 									p In Stock
 								else

@@ -17,7 +17,7 @@ block content
 				input(class='form-control', required, id='name', type='text')
 			.form-group
 				label= 'Until:'
-				input(class='form-control', require, id='date')
+				input(class='form-control', require, id='date', placeholder='dd.mm.yyyy')
 			button(class='btn btn-light', onclick='give_away(' + book.id + ');') Save
 			button(class='btn btn-danger ml-2', onclick='give_away_cancel()') Cancel
 		

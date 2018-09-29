@@ -25,16 +25,25 @@ function give_away_button(){
 }
 
 function give_away(id){
-	var name = document.getElementById('name').value;
-	document.getElementById('name').value = '';
-	var date = document.getElementById('date').value;
-	document.getElementById('date').value = '';
-	if(!name){
+	var name = document.getElementById('name');
+	var date = document.getElementById('date');
+	if(!name.value){
+		name.setAttribute('style', 'border-color:red;');
 		return;
 	}
-	if(!date){
+	if(!date.value){
+		date.setAttribute('style', 'border-color:red;');
 		return;
 	}
+	var re = /\d{2}[.]{1}\d{2}[.]{1}\d{4}/;
+	if(!re.test(date.value)){
+		date.setAttribute('style', 'border-color:red;')
+		return;
+	}
+	date.setAttribute('style', 'border-color:grey;');
+	name.setAttribute('style', 'border-color:grey;');
+	date = date.value;
+	name = name.value;
 	const xhttp = new XMLHttpRequest();
 	xhttp.open("POST", `/api/books/${id}/give_away`, true);
 	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -49,6 +58,8 @@ function give_away(id){
 }
 
 function give_away_cancel(){
+	document.getElementById('name').setAttribute('style', 'border-color:grey;');
+	document.getElementById('date').setAttribute('style', 'border-color:grey;');
 	document.getElementById('give_away').style.display = 'none';
 }
 
@@ -67,7 +78,7 @@ function showBooks(books){
 		// console.log(li);
 		li.querySelector('#book_link').innerHTML = book.title;
 		li.querySelector('#book_link').href = '/books/' + book.id;
-		li.querySelector('#book_author').innerHTML = book.author;
+		li.querySelector('#book_author').innerHTML = 'by ' + book.author;
 		if (book.inStock) {
 			li.querySelector('#book_stock').innerHTML = 'In Stock';
 		}
@@ -119,11 +130,38 @@ function filterByDateCheck(){
 		if(!input.value){
 			input.setAttribute('style', 'border-color:red;')
 			checkbox.checked = false;
+			return;
 		}
+		var re = /\d{2}[.]{1}\d{2}[.]{1}\d{4}/;
+		if(!re.test(input.value)){
+			input.setAttribute('style', 'border-color:red;')
+			checkbox.checked = false;
+			return;
+		}
+		filterBydate = input.value;
+		input.setAttribute('style', 'border-color:grey;')
+		const xhttp = new XMLHttpRequest();
+		xhttp.open("GET", '/api/books?onlyInStock=' + onlyInStock + '&' + 'filterBydate=' + filterBydate, true);
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200){
+				console.log(this.responseText);
+				showBooks(JSON.parse(this.responseText));
+			}
+		};
+		xhttp.send();
 
 	}
 	else{
-
+		filterBydate = false;
+		const xhttp = new XMLHttpRequest();
+		xhttp.open("GET", '/api/books?onlyInStock=' + onlyInStock + '&' + 'filterBydate=' + filterBydate, true);
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200){
+				console.log(this.responseText);
+				showBooks(JSON.parse(this.responseText));
+			}
+		};
+		xhttp.send();
 	}
 }
 
